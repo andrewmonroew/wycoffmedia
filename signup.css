@@ -1,0 +1,171 @@
+/* signup.css — Signup page styles */
+
+.signup-main {
+    padding: 60px 20px 80px;
+}
+
+.signup-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* ── Info Panel ──────────────────────────────────────────────────────────── */
+.signup-info h1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.signup-desc {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 20px;
+    transition: border-color 0.2s;
+}
+
+.info-card:hover {
+    border-color: #334155;
+}
+
+.info-card-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-card strong {
+    display: block;
+    color: #e2e8f0;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.info-card p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.info-card a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────────── */
+.signup-form-wrap {
+    position: sticky;
+    top: 24px;
+}
+
+.signup-form {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 32px;
+}
+
+.signup-form h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+}
+
+.form-subtitle {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 28px;
+}
+
+.required {
+    color: #f87171;
+    margin-left: 2px;
+}
+
+.optional {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.field-hint {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.field-error {
+    color: #f87171;
+    font-size: 12px;
+    margin-top: 5px;
+    min-height: 16px;
+    transition: opacity 0.2s;
+}
+
+/* ── Submit status ────────────────────────────────────────────────────────── */
+.signup-status {
+    margin-top: 16px;
+    padding: 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.signup-status.success {
+    background: #14532d;
+    color: #4ade80;
+    border: 1px solid #166534;
+}
+
+.signup-status.error {
+    background: #4c0519;
+    color: #fca5a5;
+    border: 1px solid #7f1d1d;
+}
+
+/* Input validation states */
+.form-group input.invalid {
+    border-color: #f87171;
+}
+
+.form-group input.valid {
+    border-color: #4ade80;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .signup-layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .signup-form-wrap {
+        position: static;
+    }
+
+    .signup-main {
+        padding: 32px 20px 60px;
+    }
+}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Access — Wycoff Media</title>
+    <meta name="description" content="Request access to the Wycoff Media shared Jellyfin server. Fill out the form and Andrew will review your request.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <img src="logov2.png" alt="Wycoff Media Logo" class="nav-logo">
+            </a>
+            <nav class="nav-links">
+                <a href="billing.html">Billing</a>
+                <a href="signup.html" class="active">Join</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container signup-main">
+        <div class="signup-layout">
+
+            <!-- ── Info panel ──────────────────────────────────────────── -->
+            <div class="signup-info">
+                <h1>Request Media Access</h1>
+                <p class="signup-desc">
+                    Get access to the Wycoff Media Jellyfin server — a shared library of movies, TV shows, and more.
+                </p>
+
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon">🎬</div>
+                        <div>
+                            <strong>Shared Library</strong>
+                            <p>Movies, TV shows, and more — all in one place.</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">💰</div>
+                        <div>
+                            <strong>Usage-Based Billing</strong>
+                            <p>$51/month split across all users by watch hours. Low-usage months cost less.</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">📊</div>
+                        <div>
+                            <strong>Transparent Billing</strong>
+                            <p>Track your hours and costs any time at the <a href="billing.html">billing page</a>.</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">⏱️</div>
+                        <div>
+                            <strong>Manual Review</strong>
+                            <p>Requests are reviewed by Andrew. You'll receive login credentials by email.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Signup form ─────────────────────────────────────────── -->
+            <div class="signup-form-wrap">
+                <form id="signup-form" class="signup-form" novalidate>
+                    <h2>Request Access</h2>
+                    <p class="form-subtitle">Fill out all required fields. Andrew will review and email you.</p>
+
+                    <div class="form-group">
+                        <label for="su-name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="su-name" name="name" required autocomplete="name"
+                               placeholder="Jane Smith">
+                        <div class="field-error" id="err-name"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="su-email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="su-email" name="email" required autocomplete="email"
+                               placeholder="you@example.com">
+                        <div class="field-error" id="err-email"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="su-username">Desired Username <span class="required">*</span></label>
+                        <input type="text" id="su-username" name="username" required
+                               placeholder="coolname" minlength="2" maxlength="32"
+                               autocomplete="username" spellcheck="false">
+                        <div class="field-hint">2–32 characters. Letters, numbers, and underscores only.</div>
+                        <div class="field-error" id="err-username"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="su-discord">Discord Handle <span class="optional">(optional)</span></label>
+                        <input type="text" id="su-discord" name="discord_handle"
+                               placeholder="username or user#1234">
+                    </div>
+
+                    <button type="submit" class="btn" id="signup-btn">Submit Request</button>
+                    <div id="signup-status" class="signup-status" style="display:none;"></div>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Wycoff Communications, LLC. All rights reserved. &nbsp;|&nbsp;
+                <a href="billing.html" style="color:var(--accent-color);">View Billing</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="signup.js"></script>
+</body>
+
+</html>

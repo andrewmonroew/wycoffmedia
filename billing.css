@@ -1,0 +1,431 @@
+/* billing.css — Billing page styles, extends style.css */
+
+/* ── Layout ────────────────────────────────────────────────────────────────── */
+.billing-main {
+    padding: 40px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────────── */
+.billing-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 32px;
+    background: linear-gradient(135deg, #1a2744 0%, #1e1e1e 60%);
+    border: 1px solid #2a3a5c;
+    border-radius: 8px;
+}
+
+.billing-hero h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.billing-hero p {
+    color: #94a3b8;
+    font-size: 15px;
+    max-width: 500px;
+}
+
+.billing-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.meta-chip {
+    background: #0f172a;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* ── Token / User banners ───────────────────────────────────────────────────── */
+.token-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: #1e2d1e;
+    border: 1px solid #2d4a2d;
+    border-radius: 8px;
+    padding: 16px 20px;
+    color: #a7f3a7;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+.token-input-row {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-width: 280px;
+    max-width: 460px;
+}
+
+.token-input-row input {
+    flex: 1;
+    padding: 8px 12px;
+    background: #0f1a0f;
+    border: 1px solid #2d4a2d;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+.user-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1a2033;
+    border: 1px solid #2a3a5c;
+    border-radius: 8px;
+    padding: 14px 20px;
+    color: #e2e8f0;
+}
+
+.user-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* ── Billing sections ───────────────────────────────────────────────────────── */
+.billing-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.section-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+.section-sub {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.live-badge {
+    color: #4ade80;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    animation: pulse-opacity 2s infinite;
+}
+
+@keyframes pulse-opacity {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────────── */
+.table-wrap {
+    overflow-x: auto;
+}
+
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.billing-table th {
+    background: #161616;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.billing-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #1e1e1e;
+    color: var(--text-color);
+    vertical-align: middle;
+}
+
+.billing-table tr:last-child td {
+    border-bottom: none;
+}
+
+.billing-table tr.my-row td {
+    background: #1a2033;
+    color: #fff;
+}
+
+.billing-table tr:hover td {
+    background: #1a1a1a;
+}
+
+.billing-table tr.my-row:hover td {
+    background: #1e2640;
+}
+
+/* ── Bar chart column ────────────────────────────────────────────────────────── */
+.share-bar-cell {
+    min-width: 140px;
+}
+
+.share-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: #2a2a2a;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.share-bar-fill {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+.share-bar-pct {
+    font-size: 12px;
+    color: #94a3b8;
+    width: 38px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+.badge-paid    { background: #14532d; color: #4ade80; }
+.badge-unpaid  { background: #422006; color: #fb923c; }
+.badge-overdue { background: #4c0519; color: #f87171; }
+.badge-pending { background: #1e3a5f; color: #60a5fa; }
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+.btn-sm {
+    padding: 7px 14px;
+    font-size: 13px;
+    width: auto;
+}
+
+.btn-ghost {
+    background: transparent;
+    color: #94a3b8;
+    border: 1px solid #334155;
+}
+
+.btn-ghost:hover {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+.btn-outline:hover {
+    background: rgba(33,150,243,0.1);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.btn-link:hover {
+    color: #94a3b8;
+}
+
+.btn-pay {
+    background: #14532d;
+    color: #4ade80;
+    border: 1px solid #166534;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-pay:hover { background: #166534; }
+
+.btn-approve {
+    background: #14532d;
+    color: #4ade80;
+    border: 1px solid #166534;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-deny {
+    background: #4c0519;
+    color: #f87171;
+    border: 1px solid #7f1d1d;
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+/* ── Admin controls ─────────────────────────────────────────────────────────── */
+.admin-month-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.month-picker {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    color: #fff;
+    padding: 7px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+/* ── Admin login card ───────────────────────────────────────────────────────── */
+.admin-login-card {
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+.admin-login-card h2 {
+    margin-bottom: 20px;
+    color: #fff;
+    font-weight: normal;
+}
+
+/* ── Admin link row ─────────────────────────────────────────────────────────── */
+.admin-link-row {
+    text-align: center;
+    padding: 8px 0;
+}
+
+/* ── Loading / empty states ──────────────────────────────────────────────────── */
+.loading-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 32px 24px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.empty-row {
+    padding: 32px 24px;
+    color: #64748b;
+    font-size: 14px;
+    text-align: center;
+}
+
+.error-row {
+    padding: 24px;
+    color: #f87171;
+    font-size: 14px;
+    background: #1a0a0a;
+    border-radius: 4px;
+    margin: 12px;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────────── */
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #334155;
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Token table ─────────────────────────────────────────────────────────────── */
+.token-code {
+    font-family: monospace;
+    font-size: 12px;
+    color: #94a3b8;
+    background: #0f172a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    word-break: break-all;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .billing-hero {
+        flex-direction: column;
+    }
+
+    .billing-hero-meta {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .token-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .token-input-row {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .billing-table th,
+    .billing-table td {
+        padding: 10px 12px;
+    }
+}

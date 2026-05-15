@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing — Wycoff Media</title>
+    <meta name="description" content="View your Wycoff Media usage stats, watch hours, and monthly billing invoices.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="billing.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <img src="logov2.png" alt="Wycoff Media Logo" class="nav-logo">
+            </a>
+            <nav class="nav-links">
+                <a href="billing.html" class="active">Billing</a>
+                <a href="signup.html">Join</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container billing-main">
+
+        <!-- ── Hero ──────────────────────────────────────────────────────── -->
+        <section class="billing-hero">
+            <div class="billing-hero-text">
+                <h1>Wycoff Media Billing</h1>
+                <p>Usage-based billing for the shared Jellyfin server. Costs split proportionally by watch hours.</p>
+            </div>
+            <div class="billing-hero-meta" id="hero-meta">
+                <div class="meta-chip" id="month-chip">Loading...</div>
+                <div class="meta-chip" id="total-chip">— hrs total</div>
+            </div>
+        </section>
+
+        <!-- ── Token input banner (shown when no token in URL) ───────── -->
+        <div class="token-banner" id="token-banner" style="display:none;">
+            <span>Have a billing token? Enter it to see your usage and dollar amounts.</span>
+            <div class="token-input-row">
+                <input type="text" id="token-input" placeholder="Paste your token here..." autocomplete="off">
+                <button class="btn btn-sm" onclick="applyToken()">Apply</button>
+            </div>
+        </div>
+
+        <!-- ── User greeting (when authenticated) ────────────────────── -->
+        <div class="user-banner" id="user-banner" style="display:none;">
+            <div>
+                <span class="user-icon">👤</span>
+                <strong id="user-greeting">Welcome back!</strong>
+            </div>
+            <button class="btn btn-sm btn-ghost" onclick="clearToken()">Sign Out</button>
+        </div>
+
+        <!-- ── Live stats table ───────────────────────────────────────── -->
+        <section class="billing-section">
+            <div class="section-header">
+                <h2>Current Month Usage</h2>
+                <span class="live-badge">● LIVE</span>
+            </div>
+            <div id="live-table-wrap" class="table-wrap">
+                <div class="loading-row"><div class="spinner"></div> Loading usage data...</div>
+            </div>
+        </section>
+
+        <!-- ── Invoice history (authenticated users only) ─────────────── -->
+        <section class="billing-section" id="history-section" style="display:none;">
+            <div class="section-header">
+                <h2>My Invoice History</h2>
+                <span id="history-subtitle" class="section-sub">Last 6 months</span>
+            </div>
+            <div id="history-table-wrap" class="table-wrap">
+                <div class="loading-row"><div class="spinner"></div> Loading history...</div>
+            </div>
+        </section>
+
+        <!-- ── Admin: full invoices for a month ──────────────────────── -->
+        <section class="billing-section" id="admin-invoices-section" style="display:none;">
+            <div class="section-header">
+                <h2>Admin — Invoice Management</h2>
+                <div class="admin-month-controls">
+                    <input type="month" id="admin-month-picker" class="month-picker">
+                    <button class="btn btn-sm" onclick="loadAdminInvoices()">Load</button>
+                    <button class="btn btn-sm btn-outline" onclick="generateInvoices()">Generate Invoices</button>
+                </div>
+            </div>
+            <div id="admin-invoices-wrap" class="table-wrap"></div>
+        </section>
+
+        <!-- ── Admin: pending signups ──────────────────────────────────── -->
+        <section class="billing-section" id="admin-signups-section" style="display:none;">
+            <div class="section-header">
+                <h2>Admin — Pending Signups</h2>
+                <button class="btn btn-sm" onclick="loadSignups()">Refresh</button>
+            </div>
+            <div id="signups-wrap" class="table-wrap"></div>
+        </section>
+
+        <!-- ── Admin: token list ─────────────────────────────────────── -->
+        <section class="billing-section" id="admin-tokens-section" style="display:none;">
+            <div class="section-header">
+                <h2>Admin — User Tokens</h2>
+            </div>
+            <div id="tokens-wrap" class="table-wrap"></div>
+        </section>
+
+        <!-- ── Admin login ─────────────────────────────────────────────── -->
+        <section class="billing-section" id="admin-login-section" style="display:none;">
+            <div class="admin-login-card">
+                <h2>Admin Access</h2>
+                <div class="form-group">
+                    <label for="admin-token-input">Admin Token</label>
+                    <input type="password" id="admin-token-input" placeholder="Enter admin token...">
+                </div>
+                <button class="btn" onclick="applyAdminToken()">Login as Admin</button>
+                <div id="admin-login-error" class="form-status error" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- ── Admin toggle link ─────────────────────────────────────── -->
+        <div class="admin-link-row">
+            <button class="btn-link" id="admin-toggle-btn" onclick="toggleAdminLogin()">Admin Access</button>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Wycoff Communications, LLC. All rights reserved. &nbsp;|&nbsp;
+                <a href="signup.html" style="color:var(--accent-color);">Request Access</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="billing.js"></script>
+</body>
+
+</html>
