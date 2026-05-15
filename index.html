@@ -1,11 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0;url=billing.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wycoff Media</title>
+    <meta name="description" content="Private media sharing for friends and family.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
 </head>
-<body>
-    <p>Redirecting to <a href="billing.html">Wycoff Media Billing</a>...</p>
+
+<body class="login-body">
+
+    <div class="login-page">
+
+        <!-- ── Login card ─────────────────────────────────────────────── -->
+        <div class="login-card">
+            <div class="login-header">
+                <img src="logov2.png" alt="Wycoff Media" class="login-logo">
+                <h1>Wycoff Media</h1>
+                <p class="login-tagline">Private media sharing</p>
+            </div>
+
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" autocomplete="username"
+                           placeholder="Your username" spellcheck="false">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" autocomplete="current-password"
+                           placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn" id="login-btn">Sign In</button>
+                <div id="login-error" class="login-error" style="display:none;"></div>
+            </form>
+
+            <p class="login-footer-link">
+                Don't have access? <a href="signup.html">Request Access</a>
+            </p>
+        </div>
+
+        <!-- ── Info panel ─────────────────────────────────────────────── -->
+        <div class="login-info">
+            <h2>What is Wycoff Media?</h2>
+            <p>A private, invite-only media library shared among a small group of friends and family.</p>
+
+            <div class="info-features">
+                <div class="info-feature">
+                    <span class="feature-icon">🎬</span>
+                    <div>
+                        <strong>Shared Library</strong>
+                        <p>Stream movies and TV shows from anywhere.</p>
+                    </div>
+                </div>
+                <div class="info-feature">
+                    <span class="feature-icon">💰</span>
+                    <div>
+                        <strong>Fair Cost Sharing</strong>
+                        <p>Monthly server costs split proportionally by how much each person watches.</p>
+                    </div>
+                </div>
+                <div class="info-feature">
+                    <span class="feature-icon">🔒</span>
+                    <div>
+                        <strong>Invite Only</strong>
+                        <p>Access is limited and manually approved. Not open to the public.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer login-footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Wycoff Communications, LLC. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="login.js"></script>
 </body>
+
 </html>

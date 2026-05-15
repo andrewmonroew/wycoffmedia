@@ -1,0 +1,153 @@
+/* login.css — Login / landing page styles */
+
+.login-body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 0;
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+    align-items: start;
+    gap: 60px;
+}
+
+/* ── Login card ──────────────────────────────────────────────────────────── */
+.login-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 36px 32px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.login-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    filter: invert(1) brightness(1.5);
+    mix-blend-mode: screen;
+    margin-bottom: 12px;
+}
+
+.login-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.login-tagline {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.login-error {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #4c0519;
+    color: #fca5a5;
+    border: 1px solid #7f1d1d;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.login-footer-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.login-footer-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.login-footer-link a:hover {
+    text-decoration: underline;
+}
+
+/* ── Info panel ──────────────────────────────────────────────────────────── */
+.login-info {
+    padding-top: 8px;
+}
+
+.login-info h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.login-info > p {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.info-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+
+.feature-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.info-feature strong {
+    display: block;
+    color: #e2e8f0;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.info-feature p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.login-footer {
+    margin-top: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+    .login-page {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        margin: 32px auto;
+    }
+
+    .login-card {
+        padding: 28px 20px;
+    }
+}

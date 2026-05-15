@@ -10,20 +10,26 @@ let currentUsername = null;
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-    // Check URL for user token
+    // Check URL for user token (direct token links still work)
     const params = new URLSearchParams(window.location.search);
     const urlToken = params.get("token");
     if (urlToken) {
         userToken = urlToken;
-        // Clean URL without token for privacy
-        const clean = window.location.pathname;
-        window.history.replaceState({}, "", clean);
+        localStorage.setItem("wycoff_user_token", urlToken);
+        window.history.replaceState({}, "", window.location.pathname);
+    } else {
+        const storedUser = localStorage.getItem("wycoff_user_token");
+        if (storedUser) userToken = storedUser;
     }
 
     // Check localStorage for admin token
     const storedAdmin = localStorage.getItem(ADMIN_TOKEN_KEY);
-    if (storedAdmin) {
-        adminToken = storedAdmin;
+    if (storedAdmin) adminToken = storedAdmin;
+
+    // Not logged in at all — send to login page
+    if (!userToken && !adminToken) {
+        window.location.href = "index.html";
+        return;
     }
 
     // Set default month picker to prior month
@@ -39,25 +45,12 @@ async function render() {
 
     if (adminToken) {
         showAdminView();
-    } else if (userToken) {
-        await showUserView();
     } else {
-        showPublicView();
+        await showUserView();
     }
 }
 
 // ── Views ─────────────────────────────────────────────────────────────────────
-function showPublicView() {
-    show("token-banner");
-    hide("user-banner");
-    hide("history-section");
-    hide("admin-invoices-section");
-    hide("admin-signups-section");
-    hide("admin-tokens-section");
-    hide("admin-login-section");
-    document.getElementById("admin-toggle-btn").textContent = "Admin Access";
-}
-
 async function showUserView() {
     hide("token-banner");
     hide("admin-invoices-section");
@@ -370,21 +363,23 @@ async function loadTokens() {
         }
 
         const rows = tokens.map(t => {
-            const billingLink = `https://media.wycoffcomm.com/billing.html?token=${t.token}`;
+            const hasPass = t.password_hash
+                ? `<span class="badge badge-paid">✓ Set</span>`
+                : `<span class="badge badge-unpaid">Not set</span>`;
             return `
                 <tr>
                     <td>${escHtml(t.username)}</td>
                     <td>${escHtml(t.email || "—")}</td>
-                    <td><span class="token-code">${escHtml(t.token)}</span></td>
+                    <td>${hasPass}</td>
                     <td>
-                        <button class="btn-pay" onclick="copyToClipboard('${billingLink}',this)">Copy Link</button>
+                        <button class="btn-pay" onclick="setUserPassword('${escHtml(t.username)}')">Set Password</button>
                     </td>
                 </tr>`;
         }).join("");
 
         wrap.innerHTML = `
             <table class="billing-table">
-                <thead><tr><th>Username</th><th>Email</th><th>Token</th><th>Billing Link</th></tr></thead>
+                <thead><tr><th>Username</th><th>Email</th><th>Password</th><th>Action</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>`;
     } catch (e) {
@@ -400,6 +395,22 @@ function copyToClipboard(text, btn) {
     });
 }
 
+async function setUserPassword(username) {
+    const password = prompt(`Set new password for ${username} (min 6 characters):`);
+    if (!password) return;
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters.");
+        return;
+    }
+    try {
+        await api("/api/admin/set-password", { "X-Admin-Token": adminToken }, "POST", { username, password });
+        alert(`Password set for ${username}.`);
+        loadTokens();
+    } catch (e) {
+        alert(`Error: ${e.message}`);
+    }
+}
+
 // ── Token management ──────────────────────────────────────────────────────────
 function applyToken() {
     const input = document.getElementById("token-input");
@@ -410,13 +421,12 @@ function applyToken() {
 }
 
 function clearToken() {
-    if (adminToken) {
-        localStorage.removeItem(ADMIN_TOKEN_KEY);
-        adminToken = null;
-    }
+    localStorage.removeItem(ADMIN_TOKEN_KEY);
+    localStorage.removeItem("wycoff_user_token");
+    adminToken = null;
     userToken = null;
     currentUsername = null;
-    render();
+    window.location.href = "index.html";
 }
 
 function toggleAdminLogin() {
