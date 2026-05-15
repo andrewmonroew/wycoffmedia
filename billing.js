@@ -395,6 +395,21 @@ function copyToClipboard(text, btn) {
     });
 }
 
+async function syncJellyfinUsers() {
+    const btn = document.querySelector('[onclick="syncJellyfinUsers()"]');
+    if (btn) { btn.disabled = true; btn.textContent = "Syncing..."; }
+    try {
+        const data = await api("/api/admin/sync-users", { "X-Admin-Token": adminToken }, "POST");
+        const msg = `Sync complete.\nAdded: ${data.added.length > 0 ? data.added.join(", ") : "none"}\nAlready existed: ${data.skipped.join(", ")}`;
+        alert(msg);
+        loadTokens();
+    } catch (e) {
+        alert(`Sync error: ${e.message}`);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "Sync from Jellyfin"; }
+    }
+}
+
 async function setUserPassword(username) {
     const password = prompt(`Set new password for ${username} (min 6 characters):`);
     if (!password) return;
