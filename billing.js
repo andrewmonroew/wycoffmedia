@@ -532,6 +532,27 @@ function copyToClipboard(text, btn) {
     });
 }
 
+async function resetAllPasswords() {
+    if (!confirm('Reset EVERY user\'s password to "password" on both the billing site and Jellyfin? They\'ll all be forced to change it on next login.')) return;
+    const btn = document.querySelector('[onclick="resetAllPasswords()"]');
+    if (btn) { btn.disabled = true; btn.textContent = "Resetting..."; }
+    try {
+        const data = await api("/api/admin/reset-all-passwords", { "X-Admin-Token": adminToken }, "POST");
+        const wrap = document.getElementById("initial-pw-wrap");
+        wrap.innerHTML = `
+            <div style="padding:14px 16px;font-size:13px;color:#4ade80;">
+                ✓ Reset ${data.count} user${data.count !== 1 ? "s" : ""} to <code>password</code> on billing site and Jellyfin.
+                Tell everyone: sign in at <strong>media.wycoffcomm.com</strong> with their username + <code>password</code> and set a new one.
+            </div>`;
+        wrap.style.display = "block";
+        loadTokens();
+    } catch (e) {
+        alert(`Error: ${e.message}`);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "Reset All to Default"; }
+    }
+}
+
 async function setInitialPasswords() {
     if (!confirm('Set billing password to "password" for all users who don\'t have one? They\'ll be forced to change it on first login.')) return;
     const btn = document.querySelector('[onclick="setInitialPasswords()"]');
