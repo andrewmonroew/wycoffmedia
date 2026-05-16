@@ -36,6 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const picker = document.getElementById("admin-month-picker");
     if (picker) picker.value = getPriorMonth();
 
+    // Live-update cost total as values change
+    ["cost-power", "cost-maintenance", "cost-other"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", updateCostTotal);
+    });
+
     render();
 });
 
@@ -78,11 +84,15 @@ function showAdminView() {
     show("user-banner");
     document.getElementById("user-greeting").textContent = "Admin Mode";
     hide("history-section");
+    show("admin-config-section");
+    show("admin-balances-section");
     show("admin-invoices-section");
     show("admin-signups-section");
     show("admin-tokens-section");
     hide("admin-login-section");
     document.getElementById("admin-toggle-btn").textContent = "Sign Out of Admin";
+    loadConfig();
+    loadBalances();
     loadAdminInvoices();
     loadSignups();
     loadTokens();
@@ -203,6 +213,87 @@ function renderHistoryTable(invoices) {
             </thead>
             <tbody>${rows}</tbody>
         </table>`;
+}
+
+// ── Admin: Cost Config ────────────────────────────────────────────────────────
+async function loadConfig() {
+    try {
+        const data = await api("/api/admin/config", { "X-Admin-Token": adminToken });
+        document.getElementById("cost-power").value = data.power || "";
+        document.getElementById("cost-maintenance").value = data.maintenance || "";
+        document.getElementById("cost-other").value = data.other || "";
+        updateCostTotal();
+    } catch (e) {
+        // non-fatal — fields stay at defaults
+    }
+}
+
+function updateCostTotal() {
+    const power = parseFloat(document.getElementById("cost-power").value) || 0;
+    const maint = parseFloat(document.getElementById("cost-maintenance").value) || 0;
+    const other = parseFloat(document.getElementById("cost-other").value) || 0;
+    document.getElementById("cost-total-display").textContent = `$${(power + maint + other).toFixed(2)}`;
+}
+
+async function saveConfig() {
+    const power = parseFloat(document.getElementById("cost-power").value) || 0;
+    const maintenance = parseFloat(document.getElementById("cost-maintenance").value) || 0;
+    const other = parseFloat(document.getElementById("cost-other").value) || 0;
+    try {
+        const data = await api("/api/admin/config", { "X-Admin-Token": adminToken }, "POST", { power, maintenance, other });
+        document.getElementById("cost-total-display").textContent = `$${data.total.toFixed(2)}`;
+        const status = document.getElementById("config-save-status");
+        status.style.display = "inline";
+        setTimeout(() => status.style.display = "none", 2500);
+    } catch (e) {
+        alert(`Error saving config: ${e.message}`);
+    }
+}
+
+// ── Admin: Balances ───────────────────────────────────────────────────────────
+async function loadBalances() {
+    const wrap = document.getElementById("balances-wrap");
+    wrap.innerHTML = `<div class="loading-row"><div class="spinner"></div> Loading balances...</div>`;
+    try {
+        const data = await api("/api/admin/balances", { "X-Admin-Token": adminToken });
+        const balances = data.balances;
+
+        if (!balances || balances.length === 0) {
+            wrap.innerHTML = `<div class="empty-row" style="color:#4ade80;">All caught up — no outstanding balances.</div>`;
+            return;
+        }
+
+        const totalOwed = balances.reduce((s, b) => s + b.total_owed, 0);
+
+        const rows = balances.map(b => {
+            const months = b.unpaid_months;
+            const urgency = months >= 2 ? "color:#ef4444;font-weight:700;" : "color:#fb923c;";
+            const label = months === 1 ? "1 month" : `${months} months`;
+            return `
+                <tr>
+                    <td>${escHtml(b.username)}</td>
+                    <td style="${urgency}">$${b.total_owed.toFixed(2)}</td>
+                    <td style="${urgency}">${label} overdue</td>
+                    <td>${formatMonth(b.oldest_unpaid)}</td>
+                    <td>${formatMonth(b.newest_unpaid)}</td>
+                </tr>`;
+        }).join("");
+
+        wrap.innerHTML = `
+            <table class="billing-table">
+                <thead><tr>
+                    <th>Username</th><th>Total Owed</th><th>Months Overdue</th>
+                    <th>Oldest Unpaid</th><th>Most Recent</th>
+                </tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+            <div style="padding:12px 16px;font-size:13px;color:#94a3b8;border-top:1px solid var(--border-color);">
+                Total outstanding: <strong style="color:#ef4444;">$${totalOwed.toFixed(2)}</strong>
+                across ${balances.length} user${balances.length !== 1 ? "s" : ""}
+            </div>`;
+    } catch (e) {
+        wrap.innerHTML = `<div class="error-row">Error loading balances: ${e.message}</div>`;
+    }
 }
 
 // ── Admin: Invoices ───────────────────────────────────────────────────────────
@@ -366,20 +457,29 @@ async function loadTokens() {
             const hasPass = t.password_hash
                 ? `<span class="badge badge-paid">✓ Set</span>`
                 : `<span class="badge badge-unpaid">Not set</span>`;
+            const isDisabled = t.disabled === 1 || t.disabled === true;
+            const statusBadge = isDisabled
+                ? `<span class="badge badge-overdue">Disabled</span>`
+                : `<span class="badge badge-paid">Active</span>`;
+            const toggleBtn = isDisabled
+                ? `<button class="btn-approve" onclick="toggleUserAccess('${escHtml(t.username)}', false, this)">Enable</button>`
+                : `<button class="btn-deny" onclick="toggleUserAccess('${escHtml(t.username)}', true, this)">Disable</button>`;
             return `
                 <tr>
                     <td>${escHtml(t.username)}</td>
                     <td>${escHtml(t.email || "—")}</td>
                     <td>${hasPass}</td>
+                    <td>${statusBadge}</td>
                     <td>
                         <button class="btn-pay" onclick="setUserPassword('${escHtml(t.username)}')">Set Password</button>
+                        ${toggleBtn}
                     </td>
                 </tr>`;
         }).join("");
 
         wrap.innerHTML = `
             <table class="billing-table">
-                <thead><tr><th>Username</th><th>Email</th><th>Password</th><th>Action</th></tr></thead>
+                <thead><tr><th>Username</th><th>Email</th><th>Password</th><th>Status</th><th>Actions</th></tr></thead>
                 <tbody>${rows}</tbody>
             </table>`;
     } catch (e) {
@@ -407,6 +507,21 @@ async function syncJellyfinUsers() {
         alert(`Sync error: ${e.message}`);
     } finally {
         if (btn) { btn.disabled = false; btn.textContent = "Sync from Jellyfin"; }
+    }
+}
+
+async function toggleUserAccess(username, disable, btn) {
+    const action = disable ? "disable" : "enable";
+    if (!confirm(`${disable ? "Disable" : "Re-enable"} Jellyfin access for ${username}?`)) return;
+    btn.disabled = true;
+    btn.textContent = "...";
+    try {
+        await api(`/api/admin/${action}/${encodeURIComponent(username)}`, { "X-Admin-Token": adminToken }, "POST");
+        loadTokens();
+    } catch (e) {
+        btn.disabled = false;
+        btn.textContent = disable ? "Disable" : "Enable";
+        alert(`Error: ${e.message}`);
     }
 }
 

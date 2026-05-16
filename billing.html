@@ -68,6 +68,43 @@
             </div>
         </section>
 
+        <!-- ── Admin: cost configuration ────────────────────────────── -->
+        <section class="billing-section" id="admin-config-section" style="display:none;">
+            <div class="section-header">
+                <h2>Admin — Monthly Cost</h2>
+                <span class="section-sub">Set the line items that make up the shared monthly bill</span>
+            </div>
+            <div class="cost-config-form">
+                <div class="cost-row">
+                    <label>Power / Electricity ($)</label>
+                    <input type="number" id="cost-power" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="cost-row">
+                    <label>Maintenance / Hardware ($)</label>
+                    <input type="number" id="cost-maintenance" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="cost-row">
+                    <label>Other ($)</label>
+                    <input type="number" id="cost-other" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="cost-row cost-total-row">
+                    <label>Monthly Total</label>
+                    <span id="cost-total-display" class="cost-total">$0.00</span>
+                </div>
+                <button class="btn" onclick="saveConfig()">Save Cost Config</button>
+                <span id="config-save-status" style="margin-left:12px;font-size:13px;color:#4ade80;display:none;">Saved!</span>
+            </div>
+        </section>
+
+        <!-- ── Admin: outstanding balances ───────────────────────────── -->
+        <section class="billing-section" id="admin-balances-section" style="display:none;">
+            <div class="section-header">
+                <h2>Admin — Outstanding Balances</h2>
+                <button class="btn btn-sm" onclick="loadBalances()">Refresh</button>
+            </div>
+            <div id="balances-wrap" class="table-wrap"></div>
+        </section>
+
         <!-- ── Admin: full invoices for a month ──────────────────────── -->
         <section class="billing-section" id="admin-invoices-section" style="display:none;">
             <div class="section-header">
