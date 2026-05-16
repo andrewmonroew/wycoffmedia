@@ -7,6 +7,7 @@ const ADMIN_TOKEN_KEY = "wycoff_admin_token";
 let userToken = null;
 let adminToken = null;
 let currentUsername = null;
+let costConfig = { power: 0, maintenance: 0, other: 0, total: 0 };
 
 // ── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
@@ -48,6 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ── Render orchestrator ───────────────────────────────────────────────────────
 async function render() {
+    // Fetch cost config early so breakdown is available for all views
+    try {
+        costConfig = await api("/api/billing/cost-config");
+    } catch (_) {}
     await loadLiveStats();
 
     if (adminToken) {
@@ -198,12 +203,24 @@ function renderHistoryTable(invoices) {
             badge = `<span class="badge badge-unpaid">⚠ Unpaid</span>`;
         }
 
+        const share = inv.share_pct / 100;
+        const breakdown = costConfig.total > 0
+            ? `<div class="inv-breakdown">
+                ${costConfig.power > 0 ? `<span>Power $${(share * costConfig.power).toFixed(2)}</span>` : ""}
+                ${costConfig.maintenance > 0 ? `<span>Maintenance $${(share * costConfig.maintenance).toFixed(2)}</span>` : ""}
+                ${costConfig.other > 0 ? `<span>Other $${(share * costConfig.other).toFixed(2)}</span>` : ""}
+               </div>`
+            : "";
+
         return `
             <tr>
                 <td>${formatMonth(inv.month)}</td>
                 <td>${inv.hours.toFixed(1)} hrs</td>
                 <td>${inv.share_pct.toFixed(1)}%</td>
-                <td style="color:#4ade80;font-weight:600;">$${inv.amount_owed.toFixed(2)}</td>
+                <td>
+                    <span style="color:#4ade80;font-weight:600;">$${inv.amount_owed.toFixed(2)}</span>
+                    ${breakdown}
+                </td>
                 <td>${badge}</td>
                 <td>${inv.paid_date ? inv.paid_date.slice(0, 10) : "—"}</td>
             </tr>`;
@@ -503,6 +520,48 @@ function copyToClipboard(text, btn) {
         btn.textContent = "Copied!";
         setTimeout(() => btn.textContent = orig, 2000);
     });
+}
+
+async function setInitialPasswords() {
+    if (!confirm("Generate and set passwords for all users who don't have one yet? Generated passwords will be shown here once — save them before closing.")) return;
+
+    const btn = document.querySelector('[onclick="setInitialPasswords()"]');
+    if (btn) { btn.disabled = true; btn.textContent = "Working..."; }
+
+    try {
+        const data = await api("/api/admin/set-initial-passwords", { "X-Admin-Token": adminToken }, "POST");
+        const wrap = document.getElementById("initial-pw-wrap");
+
+        if (data.count === 0) {
+            wrap.innerHTML = `<div class="empty-row" style="color:#4ade80;">All users already have passwords set.</div>`;
+        } else {
+            const rows = data.users.map(u => `
+                <tr>
+                    <td>${escHtml(u.username)}</td>
+                    <td>${escHtml(u.email || "—")}</td>
+                    <td><code style="color:#4ade80;font-family:monospace;font-size:13px;">${escHtml(u.password)}</code></td>
+                </tr>`).join("");
+
+            wrap.innerHTML = `
+                <div style="padding:12px 16px 0;font-size:13px;color:#fb923c;font-weight:600;">
+                    ⚠ Save these passwords now — they will not be shown again.
+                </div>
+                <table class="billing-table">
+                    <thead><tr><th>Username</th><th>Email</th><th>Generated Password</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+                <div style="padding:8px 16px 12px;">
+                    <button class="btn btn-sm btn-ghost" onclick="document.getElementById('initial-pw-wrap').style.display='none'">Dismiss</button>
+                </div>`;
+        }
+
+        wrap.style.display = "block";
+        loadTokens();
+    } catch (e) {
+        alert(`Error: ${e.message}`);
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = "Set Initial Passwords"; }
+    }
 }
 
 async function syncJellyfinUsers() {

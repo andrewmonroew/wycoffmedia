@@ -132,8 +132,12 @@
         <section class="billing-section" id="admin-tokens-section" style="display:none;">
             <div class="section-header">
                 <h2>Admin — Users</h2>
-                <button class="btn btn-sm btn-outline" onclick="syncJellyfinUsers()">Sync from Jellyfin</button>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-outline" onclick="syncJellyfinUsers()">Sync from Jellyfin</button>
+                    <button class="btn btn-sm" onclick="setInitialPasswords()">Set Initial Passwords</button>
+                </div>
             </div>
+            <div id="initial-pw-wrap" style="display:none;"></div>
             <div id="tokens-wrap" class="table-wrap"></div>
         </section>
 

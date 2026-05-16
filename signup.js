@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("su-username").addEventListener("input", validateUsername);
     document.getElementById("su-email").addEventListener("blur", validateEmail);
     document.getElementById("su-name").addEventListener("blur", validateName);
+    document.getElementById("su-password").addEventListener("blur", validatePassword);
+    document.getElementById("su-password-confirm").addEventListener("blur", validatePasswordConfirm);
 });
 
 // ── Validation ────────────────────────────────────────────────────────────────
@@ -62,6 +64,41 @@ function validateUsername() {
     return true;
 }
 
+function validatePassword() {
+    const el = document.getElementById("su-password");
+    const err = document.getElementById("err-password");
+    const val = el.value;
+    if (!val) {
+        setFieldError(el, err, "Password is required.");
+        return false;
+    }
+    if (val.length < 6) {
+        setFieldError(el, err, "Password must be at least 6 characters.");
+        return false;
+    }
+    clearFieldError(el, err);
+    // Re-validate confirm if it has a value
+    const confirm = document.getElementById("su-password-confirm");
+    if (confirm.value) validatePasswordConfirm();
+    return true;
+}
+
+function validatePasswordConfirm() {
+    const el = document.getElementById("su-password-confirm");
+    const err = document.getElementById("err-password-confirm");
+    const password = document.getElementById("su-password").value;
+    if (!el.value) {
+        setFieldError(el, err, "Please confirm your password.");
+        return false;
+    }
+    if (el.value !== password) {
+        setFieldError(el, err, "Passwords do not match.");
+        return false;
+    }
+    clearFieldError(el, err);
+    return true;
+}
+
 function setFieldError(el, errEl, msg) {
     el.classList.add("invalid");
     el.classList.remove("valid");
@@ -82,8 +119,10 @@ async function handleSubmit(e) {
     const nameOk = validateName();
     const emailOk = validateEmail();
     const usernameOk = validateUsername();
+    const passwordOk = validatePassword();
+    const passwordConfirmOk = validatePasswordConfirm();
 
-    if (!nameOk || !emailOk || !usernameOk) return;
+    if (!nameOk || !emailOk || !usernameOk || !passwordOk || !passwordConfirmOk) return;
 
     const btn = document.getElementById("signup-btn");
     const statusEl = document.getElementById("signup-status");
@@ -98,6 +137,7 @@ async function handleSubmit(e) {
         email: document.getElementById("su-email").value.trim(),
         username: document.getElementById("su-username").value.trim(),
         discord_handle: document.getElementById("su-discord").value.trim() || null,
+        password: document.getElementById("su-password").value,
     };
 
     try {
@@ -115,7 +155,7 @@ async function handleSubmit(e) {
                 <strong>Request received!</strong><br>
                 ${data.message || "Your request has been submitted and is pending review."}
                 <br><br>
-                <small>You'll receive an email at <strong>${escHtml(payload.email)}</strong> once Andrew reviews your request.</small>
+                <small>You'll receive an email at <strong>${escHtml(payload.email)}</strong> once Andrew approves your request. Your chosen password will work on Jellyfin and this portal.</small>
             `;
             statusEl.style.display = "block";
             document.getElementById("signup-form").querySelectorAll("input").forEach(i => i.disabled = true);

@@ -59,7 +59,7 @@
                         <div class="info-card-icon">⏱️</div>
                         <div>
                             <strong>Manual Review</strong>
-                            <p>Requests are reviewed by Andrew. You'll receive login credentials by email.</p>
+                            <p>Requests are reviewed by Andrew. Set your password during signup — it'll work on Jellyfin and the billing portal once approved.</p>
                         </div>
                     </div>
                 </div>
@@ -98,6 +98,21 @@
                         <label for="su-discord">Discord Handle <span class="optional">(optional)</span></label>
                         <input type="text" id="su-discord" name="discord_handle"
                                placeholder="username or user#1234">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="su-password">Password <span class="required">*</span></label>
+                        <input type="password" id="su-password" name="password" required
+                               placeholder="Choose a password" autocomplete="new-password">
+                        <div class="field-hint">At least 6 characters. Used to log in here and on Jellyfin.</div>
+                        <div class="field-error" id="err-password"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="su-password-confirm">Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="su-password-confirm" name="password_confirm" required
+                               placeholder="Repeat your password" autocomplete="new-password">
+                        <div class="field-error" id="err-password-confirm"></div>
                     </div>
 
                     <button type="submit" class="btn" id="signup-btn">Submit Request</button>

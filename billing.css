@@ -389,6 +389,23 @@
     font-weight: normal;
 }
 
+/* ── Invoice line-item breakdown ────────────────────────────────────────────── */
+.inv-breakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 5px;
+}
+
+.inv-breakdown span {
+    font-size: 11px;
+    color: #64748b;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 3px;
+    padding: 2px 7px;
+}
+
 /* ── Change password form ───────────────────────────────────────────────────── */
 .pw-change-form {
     padding: 24px;
