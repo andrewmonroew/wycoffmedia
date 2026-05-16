@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Access — Wycoff Media</title>
+    <meta name="description" content="How to watch Wycoff Media on any device.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="info.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <img src="logov2.png" alt="Wycoff Media Logo" class="nav-logo">
+            </a>
+            <nav class="nav-links">
+                <a href="info.html" class="active">How to Access</a>
+                <a href="billing.html">Billing</a>
+                <a href="signup.html">Join</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container info-main">
+
+        <div class="info-hero">
+            <h1>How to Watch</h1>
+            <p>Everything you need to start streaming. Your Wycoff Media username and password work everywhere.</p>
+            <div class="info-user-row" id="info-user-row" style="display:none;">
+                <span id="info-greeting"></span>
+                <button class="btn btn-sm btn-ghost" onclick="signOut()">Sign Out</button>
+            </div>
+        </div>
+
+        <!-- ── Browser ─────────────────────────────────────────────── -->
+        <section class="info-section">
+            <div class="info-section-header">
+                <div class="info-icon">🌐</div>
+                <div>
+                    <h2>Web Browser</h2>
+                    <p>The easiest way to get started — no app needed.</p>
+                </div>
+            </div>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Jellyfin (Watch)</h3>
+                    <p>Open any browser — Chrome, Firefox, or Safari — and go to:</p>
+                    <a href="https://jellyfin.wycoffcomm.com" class="server-link" target="_blank">jellyfin.wycoffcomm.com</a>
+                    <p class="info-note">Sign in with your Wycoff Media username and password.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Jellyseerr (Request Content)</h3>
+                    <p>Want to request a movie or show? Visit:</p>
+                    <a href="https://jellyseerr.wycoffcomm.com" class="server-link" target="_blank">jellyseerr.wycoffcomm.com</a>
+                    <p class="info-note">Same username and password as Jellyfin.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Mobile ──────────────────────────────────────────────── -->
+        <section class="info-section">
+            <div class="info-section-header">
+                <div class="info-icon">📱</div>
+                <div>
+                    <h2>Phone &amp; Tablet</h2>
+                    <p>Download the Jellyfin app, then point it at the server.</p>
+                </div>
+            </div>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>iPhone &amp; iPad</h3>
+                    <p>Search <strong>Jellyfin</strong> in the App Store, or use <strong>Infuse</strong> for a more polished experience.</p>
+                    <div class="server-box">Server: <code>jellyfin.wycoffcomm.com</code></div>
+                </div>
+                <div class="info-card">
+                    <h3>Android</h3>
+                    <p>Search <strong>Jellyfin</strong> in the Google Play Store.</p>
+                    <div class="server-box">Server: <code>jellyfin.wycoffcomm.com</code></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── TV & Streaming ──────────────────────────────────────── -->
+        <section class="info-section">
+            <div class="info-section-header">
+                <div class="info-icon">📺</div>
+                <div>
+                    <h2>TV &amp; Streaming Devices</h2>
+                    <p>Install the Jellyfin app, enter the server address, and sign in.</p>
+                </div>
+            </div>
+            <div class="server-box server-box-prominent">
+                Server address for all apps: <code>jellyfin.wycoffcomm.com</code>
+            </div>
+            <div class="device-grid">
+                <div class="device-card">
+                    <div class="device-icon">🔴</div>
+                    <strong>Roku</strong>
+                    <span>Search "Jellyfin" in the Roku Channel Store</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🔥</div>
+                    <strong>Amazon Fire TV / Stick</strong>
+                    <span>Search "Jellyfin" in the Amazon Appstore</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🍎</div>
+                    <strong>Apple TV</strong>
+                    <span>Download <strong>Infuse</strong> or <strong>Jellyfin</strong> from the App Store</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🤖</div>
+                    <strong>Android TV / Google TV</strong>
+                    <span>Search "Jellyfin" in the Google Play Store</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🅽</div>
+                    <strong>Nvidia Shield</strong>
+                    <span>Install Jellyfin from Google Play</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🎮</div>
+                    <strong>Xbox</strong>
+                    <span>Open the browser and go to <strong>jellyfin.wycoffcomm.com</strong>, or search "Jellyfin" in the Microsoft Store</span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">🎮</div>
+                    <strong>PlayStation</strong>
+                    <span>Open the browser and go to <strong>jellyfin.wycoffcomm.com</strong></span>
+                </div>
+                <div class="device-card">
+                    <div class="device-icon">📺</div>
+                    <strong>Samsung / LG Smart TV</strong>
+                    <span>Search for Jellyfin in the built-in app store. If unavailable, use the TV's browser.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Credentials ─────────────────────────────────────────── -->
+        <section class="info-section info-section-accent">
+            <div class="info-section-header">
+                <div class="info-icon">🔑</div>
+                <div>
+                    <h2>Your Login</h2>
+                    <p>One username and password works across all platforms.</p>
+                </div>
+            </div>
+            <div class="creds-grid">
+                <div class="cred-item">
+                    <span class="cred-label">This billing site</span>
+                    <span class="cred-check">✓</span>
+                </div>
+                <div class="cred-item">
+                    <span class="cred-label">Jellyfin (jellyfin.wycoffcomm.com)</span>
+                    <span class="cred-check">✓</span>
+                </div>
+                <div class="cred-item">
+                    <span class="cred-label">Jellyseerr (content requests)</span>
+                    <span class="cred-check">✓</span>
+                </div>
+            </div>
+            <p class="info-note" style="margin-top:16px;">
+                Need to change your password? Go to the
+                <a href="billing.html" style="color:var(--accent-color);">Billing page</a> — there's a
+                "Change Password" section at the bottom. Your Jellyfin password updates automatically.
+            </p>
+        </section>
+
+        <!-- ── Help ────────────────────────────────────────────────── -->
+        <section class="info-section">
+            <div class="info-section-header">
+                <div class="info-icon">💬</div>
+                <div>
+                    <h2>Need Help?</h2>
+                    <p>Reach out on Discord or shoot Andrew a message.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Wycoff Communications, LLC. All rights reserved. &nbsp;|&nbsp;
+                <a href="signup.html" style="color:var(--accent-color);">Request Access</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Auth check — redirect to login if not signed in
+        (function () {
+            if (!localStorage.getItem("wycoff_user_token") && !localStorage.getItem("wycoff_admin_token")) {
+                window.location.href = "index.html";
+            }
+            const username = localStorage.getItem("wycoff_username");
+            if (username) {
+                const row = document.getElementById("info-user-row");
+                const greeting = document.getElementById("info-greeting");
+                greeting.textContent = `Signed in as ${username}`;
+                row.style.display = "flex";
+            }
+        })();
+
+        function signOut() {
+            localStorage.removeItem("wycoff_admin_token");
+            localStorage.removeItem("wycoff_user_token");
+            localStorage.removeItem("wycoff_username");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+
+</html>

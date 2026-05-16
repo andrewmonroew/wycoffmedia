@@ -1,0 +1,229 @@
+/* info.css — How to Access page */
+
+.info-main {
+    padding: 40px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────────── */
+.info-hero {
+    padding: 40px 32px;
+    background: linear-gradient(135deg, #1a2744 0%, #1e1e1e 60%);
+    border: 1px solid #2a3a5c;
+    border-radius: 8px;
+}
+
+.info-hero h1 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.info-hero > p {
+    color: #94a3b8;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 560px;
+}
+
+.info-user-row {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────────────── */
+.info-section {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 28px 32px;
+}
+
+.info-section-accent {
+    border-color: #2a3a5c;
+    background: #111827;
+}
+
+.info-section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.info-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-section-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.info-section-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ── Cards (browser / mobile) ─────────────────────────────────────────────── */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.info-card {
+    background: #111827;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.info-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 8px;
+}
+
+.info-card p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 12px;
+}
+
+.server-link {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-color);
+    text-decoration: none;
+    border: 1px solid var(--accent-color);
+    padding: 6px 14px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    transition: background 0.2s;
+}
+
+.server-link:hover {
+    background: rgba(33, 150, 243, 0.1);
+}
+
+.info-note {
+    color: #64748b;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* ── Server box ───────────────────────────────────────────────────────────── */
+.server-box {
+    display: inline-block;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 13px;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.server-box code {
+    color: #4ade80;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.server-box-prominent {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+}
+
+/* ── Device grid ──────────────────────────────────────────────────────────── */
+.device-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.device-card {
+    background: #111827;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.device-icon {
+    font-size: 22px;
+}
+
+.device-card strong {
+    font-size: 14px;
+    color: #e2e8f0;
+}
+
+.device-card span {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* ── Credentials grid ─────────────────────────────────────────────────────── */
+.creds-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cred-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 12px 16px;
+}
+
+.cred-label {
+    font-size: 14px;
+    color: #e2e8f0;
+}
+
+.cred-check {
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+    .info-hero {
+        padding: 28px 20px;
+    }
+
+    .info-section {
+        padding: 20px 16px;
+    }
+
+    .info-section-header {
+        gap: 12px;
+    }
+}

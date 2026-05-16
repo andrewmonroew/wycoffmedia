@@ -22,9 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (storedUser) userToken = storedUser;
     }
 
-    // Check localStorage for admin token
+    // Check localStorage for admin token and stored username
     const storedAdmin = localStorage.getItem(ADMIN_TOKEN_KEY);
     if (storedAdmin) adminToken = storedAdmin;
+    currentUsername = localStorage.getItem("wycoff_username") || null;
 
     // Not logged in at all — send to login page
     if (!userToken && !adminToken) {
@@ -59,20 +60,27 @@ async function render() {
 // ── Views ─────────────────────────────────────────────────────────────────────
 async function showUserView() {
     hide("token-banner");
+    hide("admin-config-section");
+    hide("admin-balances-section");
     hide("admin-invoices-section");
     hide("admin-signups-section");
     hide("admin-tokens-section");
     hide("admin-login-section");
+    // Hide admin toggle for regular users — they don't need to see it
+    const adminToggleRow = document.querySelector(".admin-link-row");
+    if (adminToggleRow) adminToggleRow.style.display = "none";
 
     // Fetch user info
     try {
         const data = await api("/api/billing/me", { "X-User-Token": userToken });
         currentUsername = data.username;
+        localStorage.setItem("wycoff_username", data.username);
         show("user-banner");
         document.getElementById("user-greeting").textContent =
             `Signed in as ${data.username}`;
         renderHistoryTable(data.invoices);
         show("history-section");
+        show("change-password-section");
     } catch (e) {
         show("token-banner");
         showError("token-banner", "Invalid token. Please check and try again.");
@@ -117,30 +125,32 @@ async function loadLiveStats() {
         }
 
         const showAmount = !!userToken || !!adminToken;
-        wrap.innerHTML = renderLiveTable(users, showAmount);
+        wrap.innerHTML = renderLiveTable(users, showAmount, !!adminToken);
     } catch (e) {
         wrap.innerHTML = `<div class="error-row">⚠ Could not load live data. API may be unreachable.<br><small>${e.message}</small></div>`;
     }
 }
 
-function renderLiveTable(users, showAmount) {
+function renderLiveTable(users, showAmount, isAdmin) {
     const monthlyCost = 51.00;
-    const amountCol = showAmount
-        ? "<th>Amount Owed</th>"
-        : "<th>Amount</th>";
+    const amountCol = showAmount ? "<th>Amount Owed</th>" : "<th>Amount</th>";
 
-    const rows = users.map(u => {
+    const rows = users.map((u, i) => {
         const isMe = currentUsername && u.username === currentUsername;
         const rowClass = isMe ? "my-row" : "";
-        const meTag = isMe ? " ⭐" : "";
+
+        // Admins see real names; regular users see "You" or "User N" for privacy
+        const displayName = isAdmin
+            ? escHtml(u.username) + (isMe ? " ⭐" : "")
+            : (isMe ? "You ⭐" : `User ${i + 1}`);
 
         const amountCell = showAmount
             ? `<td style="color:#4ade80;font-weight:600;">$${((u.share_pct / 100) * monthlyCost).toFixed(2)}</td>`
-            : `<td><span style="color:#64748b;font-size:12px;">Token required</span></td>`;
+            : `<td><span style="color:#64748b;font-size:12px;">Sign in to view</span></td>`;
 
         return `
             <tr class="${rowClass}">
-                <td>${escHtml(u.username)}${meTag}</td>
+                <td>${displayName}</td>
                 <td>${u.hours.toFixed(1)} hrs</td>
                 <td class="share-bar-cell">
                     <div class="share-bar-wrap">
@@ -219,9 +229,9 @@ function renderHistoryTable(invoices) {
 async function loadConfig() {
     try {
         const data = await api("/api/admin/config", { "X-Admin-Token": adminToken });
-        document.getElementById("cost-power").value = data.power || "";
-        document.getElementById("cost-maintenance").value = data.maintenance || "";
-        document.getElementById("cost-other").value = data.other || "";
+        document.getElementById("cost-power").value = data.power ?? 0;
+        document.getElementById("cost-maintenance").value = data.maintenance ?? 0;
+        document.getElementById("cost-other").value = data.other ?? 0;
         updateCostTotal();
     } catch (e) {
         // non-fatal — fields stay at defaults
@@ -553,10 +563,55 @@ function applyToken() {
 function clearToken() {
     localStorage.removeItem(ADMIN_TOKEN_KEY);
     localStorage.removeItem("wycoff_user_token");
+    localStorage.removeItem("wycoff_username");
     adminToken = null;
     userToken = null;
     currentUsername = null;
     window.location.href = "index.html";
+}
+
+async function changePassword() {
+    const current = document.getElementById("current-password-input").value;
+    const newPw = document.getElementById("new-password-input").value;
+    const statusEl = document.getElementById("change-password-status");
+
+    statusEl.style.display = "none";
+
+    if (!current || !newPw) {
+        statusEl.textContent = "Please fill in both fields.";
+        statusEl.className = "pw-status pw-error";
+        statusEl.style.display = "block";
+        return;
+    }
+    if (newPw.length < 6) {
+        statusEl.textContent = "New password must be at least 6 characters.";
+        statusEl.className = "pw-status pw-error";
+        statusEl.style.display = "block";
+        return;
+    }
+
+    const btn = document.getElementById("change-password-btn");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    try {
+        await api("/api/user/change-password", { "X-User-Token": userToken }, "POST", {
+            current_password: current,
+            new_password: newPw,
+        });
+        document.getElementById("current-password-input").value = "";
+        document.getElementById("new-password-input").value = "";
+        statusEl.textContent = "Password changed. Your Jellyfin password has also been updated.";
+        statusEl.className = "pw-status pw-success";
+        statusEl.style.display = "block";
+    } catch (e) {
+        statusEl.textContent = e.message;
+        statusEl.className = "pw-status pw-error";
+        statusEl.style.display = "block";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Change Password";
+    }
 }
 
 function toggleAdminLogin() {

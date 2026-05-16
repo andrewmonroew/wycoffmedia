@@ -389,6 +389,33 @@
     font-weight: normal;
 }
 
+/* ── Change password form ───────────────────────────────────────────────────── */
+.pw-change-form {
+    padding: 24px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pw-status {
+    padding: 10px 14px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.pw-success {
+    background: #14532d;
+    color: #4ade80;
+    border: 1px solid #166534;
+}
+
+.pw-error {
+    background: #4c0519;
+    color: #fca5a5;
+    border: 1px solid #7f1d1d;
+}
+
 /* ── Admin link row ─────────────────────────────────────────────────────────── */
 .admin-link-row {
     text-align: center;

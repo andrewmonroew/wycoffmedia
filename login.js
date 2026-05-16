@@ -3,9 +3,13 @@
 const API = "https://billing-api.wycoffcomm.com";
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Already logged in — go straight to billing
-    if (localStorage.getItem("wycoff_user_token") || localStorage.getItem("wycoff_admin_token")) {
+    // Already logged in — send to appropriate page
+    if (localStorage.getItem("wycoff_admin_token")) {
         window.location.href = "billing.html";
+        return;
+    }
+    if (localStorage.getItem("wycoff_user_token")) {
+        window.location.href = "info.html";
         return;
     }
 
@@ -53,8 +57,11 @@ async function handleLogin(e) {
         if (data.is_admin && data.admin_token) {
             localStorage.setItem("wycoff_admin_token", data.admin_token);
         }
+        if (data.username) {
+            localStorage.setItem("wycoff_username", data.username);
+        }
 
-        window.location.href = "billing.html";
+        window.location.href = data.is_admin ? "billing.html" : "info.html";
 
     } catch (err) {
         errEl.textContent = "Connection error. Please try again.";
