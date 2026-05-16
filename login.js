@@ -60,6 +60,11 @@ async function handleLogin(e) {
         if (data.username) {
             localStorage.setItem("wycoff_username", data.username);
         }
+        if (data.must_change_password) {
+            localStorage.setItem("wycoff_must_change_pw", "1");
+        } else {
+            localStorage.removeItem("wycoff_must_change_pw");
+        }
 
         window.location.href = data.is_admin ? "billing.html" : "info.html";
 

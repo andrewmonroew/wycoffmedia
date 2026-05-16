@@ -83,6 +83,16 @@ async function showUserView() {
         show("user-banner");
         document.getElementById("user-greeting").textContent =
             `Signed in as ${data.username}`;
+
+        if (localStorage.getItem("wycoff_must_change_pw") === "1") {
+            // Force password change — hide everything else, show only the change form
+            show("must-change-banner");
+            show("change-password-section");
+            document.getElementById("change-password-section")
+                .scrollIntoView({ behavior: "smooth", block: "center" });
+            return;
+        }
+
         renderHistoryTable(data.invoices);
         show("history-section");
         show("change-password-section");
@@ -523,8 +533,7 @@ function copyToClipboard(text, btn) {
 }
 
 async function setInitialPasswords() {
-    if (!confirm("Generate and set passwords for all users who don't have one yet? Generated passwords will be shown here once — save them before closing.")) return;
-
+    if (!confirm('Set billing password to "password" for all users who don\'t have one? They\'ll be forced to change it on first login.')) return;
     const btn = document.querySelector('[onclick="setInitialPasswords()"]');
     if (btn) { btn.disabled = true; btn.textContent = "Working..."; }
 
@@ -539,15 +548,16 @@ async function setInitialPasswords() {
                 <tr>
                     <td>${escHtml(u.username)}</td>
                     <td>${escHtml(u.email || "—")}</td>
-                    <td><code style="color:#4ade80;font-family:monospace;font-size:13px;">${escHtml(u.password)}</code></td>
                 </tr>`).join("");
 
             wrap.innerHTML = `
-                <div style="padding:12px 16px 0;font-size:13px;color:#fb923c;font-weight:600;">
-                    ⚠ Save these passwords now — they will not be shown again.
+                <div style="padding:12px 16px 0;font-size:13px;color:#94a3b8;">
+                    Password set to <code style="color:#4ade80;">password</code> for ${data.count} user${data.count !== 1 ? "s" : ""}.
+                    They'll be prompted to change it when they first log in.
+                    Tell them: sign in at <strong>media.wycoffcomm.com</strong> with username + <code>password</code>.
                 </div>
                 <table class="billing-table">
-                    <thead><tr><th>Username</th><th>Email</th><th>Generated Password</th></tr></thead>
+                    <thead><tr><th>Username</th><th>Email</th></tr></thead>
                     <tbody>${rows}</tbody>
                 </table>
                 <div style="padding:8px 16px 12px;">
@@ -660,9 +670,14 @@ async function changePassword() {
         });
         document.getElementById("current-password-input").value = "";
         document.getElementById("new-password-input").value = "";
+        localStorage.removeItem("wycoff_must_change_pw");
         statusEl.textContent = "Password changed. Your Jellyfin password has also been updated.";
         statusEl.className = "pw-status pw-success";
         statusEl.style.display = "block";
+        // If they were forced here, now load the rest of the page
+        hide("must-change-banner");
+        show("history-section");
+        render();
     } catch (e) {
         statusEl.textContent = e.message;
         statusEl.className = "pw-status pw-error";

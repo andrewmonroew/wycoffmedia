@@ -389,6 +389,19 @@
     font-weight: normal;
 }
 
+/* ── Must-change-password banner ────────────────────────────────────────────── */
+.must-change-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #422006;
+    border: 1px solid #c2410c;
+    border-radius: 6px;
+    color: #fed7aa;
+    font-size: 14px;
+}
+
 /* ── Invoice line-item breakdown ────────────────────────────────────────────── */
 .inv-breakdown {
     display: flex;
