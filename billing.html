@@ -19,6 +19,7 @@
             <nav class="nav-links">
                 <a href="info.html">How to Access</a>
                 <a href="billing.html" class="active">Billing</a>
+                <a href="announcements.html">Announcements</a>
                 <a href="signup.html">Join</a>
             </nav>
         </div>
@@ -160,6 +161,22 @@
                 </div>
                 <button class="btn" onclick="applyAdminToken()">Login as Admin</button>
                 <div id="admin-login-error" class="form-status error" style="display:none;"></div>
+            </div>
+        </section>
+
+        <!-- ── User email (non-admin users) ──────────────────────────── -->
+        <section class="billing-section" id="user-email-section" style="display:none;">
+            <div class="section-header">
+                <h2>My Email</h2>
+                <span class="section-sub">Used for billing notifications and announcements</span>
+            </div>
+            <div class="pw-change-form">
+                <div class="form-group">
+                    <label for="user-email-input">Email Address</label>
+                    <input type="email" id="user-email-input" placeholder="your@email.com">
+                </div>
+                <button class="btn" onclick="saveUserEmail()">Save Email</button>
+                <div id="user-email-status" class="pw-status" style="display:none;"></div>
             </div>
         </section>
 

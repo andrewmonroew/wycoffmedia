@@ -93,6 +93,11 @@ async function showUserView() {
             return;
         }
 
+        // Populate email field
+        const emailInput = document.getElementById("user-email-input");
+        if (emailInput) emailInput.value = data.email || "";
+        show("user-email-section");
+
         renderHistoryTable(data.invoices);
         show("history-section");
         show("change-password-section");
@@ -104,6 +109,7 @@ async function showUserView() {
 
 function showAdminView() {
     hide("token-banner");
+    hide("user-email-section");
     show("user-banner");
     document.getElementById("user-greeting").textContent = "Admin Mode";
     hide("history-section");
@@ -507,9 +513,10 @@ async function loadTokens() {
                     <td>${escHtml(t.email || "—")}</td>
                     <td>${hasPass}</td>
                     <td>${statusBadge}</td>
-                    <td>
-                        <button class="btn-pay" onclick="setUserPassword('${escHtml(t.username)}')">Set Password</button>
+                    <td style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <button class="btn-pay" onclick="setUserPassword('${escHtml(t.username)}')">Set PW</button>
                         ${toggleBtn}
+                        <button class="btn-deny" style="margin-left:0;" onclick="deleteUser('${escHtml(t.username)}',this)">Delete</button>
                     </td>
                 </tr>`;
         }).join("");
@@ -638,6 +645,54 @@ async function setUserPassword(username) {
         loadTokens();
     } catch (e) {
         alert(`Error: ${e.message}`);
+    }
+}
+
+// ── User email ────────────────────────────────────────────────────────────────
+async function saveUserEmail() {
+    const email = document.getElementById("user-email-input").value.trim();
+    const statusEl = document.getElementById("user-email-status");
+    statusEl.style.display = "none";
+
+    if (!email || !email.includes("@")) {
+        statusEl.textContent = "Please enter a valid email address.";
+        statusEl.className = "pw-status pw-error";
+        statusEl.style.display = "block";
+        return;
+    }
+
+    const btn = document.querySelector('[onclick="saveUserEmail()"]');
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    try {
+        await api("/api/user/set-email", { "X-User-Token": userToken }, "POST", { email });
+        statusEl.textContent = "Email saved. You'll receive billing notifications here.";
+        statusEl.className = "pw-status pw-success";
+        statusEl.style.display = "block";
+        setTimeout(() => { statusEl.style.display = "none"; }, 4000);
+    } catch (e) {
+        statusEl.textContent = e.message;
+        statusEl.className = "pw-status pw-error";
+        statusEl.style.display = "block";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Save Email";
+    }
+}
+
+// ── Admin: Delete user ─────────────────────────────────────────────────────────
+async function deleteUser(username, btn) {
+    if (!confirm(`Permanently delete ${username}? This removes them from the billing site, Jellyfin, and Jellyseerr. This cannot be undone.`)) return;
+    btn.disabled = true;
+    btn.textContent = "Deleting...";
+    try {
+        await api(`/api/admin/users/${encodeURIComponent(username)}`, { "X-Admin-Token": adminToken }, "DELETE");
+        loadTokens();
+    } catch (e) {
+        btn.disabled = false;
+        btn.textContent = "Delete";
+        alert(`Error deleting ${username}: ${e.message}`);
     }
 }
 

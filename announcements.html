@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements — Wycoff Media</title>
+    <meta name="description" content="Updates and announcements from Wycoff Media.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="billing.css">
+    <link rel="stylesheet" href="announcements.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">
+                <img src="logov2.png" alt="Wycoff Media Logo" class="nav-logo">
+            </a>
+            <nav class="nav-links">
+                <a href="info.html">How to Access</a>
+                <a href="billing.html">Billing</a>
+                <a href="announcements.html" class="active">Announcements</a>
+                <a href="signup.html">Join</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container ann-main">
+
+        <!-- ── User banner ─────────────────────────────────────────────── -->
+        <div class="user-banner" id="user-banner" style="display:none;">
+            <div>
+                <span class="user-icon">👤</span>
+                <strong id="user-greeting">Loading...</strong>
+            </div>
+            <button class="btn btn-sm btn-ghost" onclick="signOut()">Sign Out</button>
+        </div>
+
+        <!-- ── Admin compose ───────────────────────────────────────────── -->
+        <section class="billing-section" id="compose-section" style="display:none;">
+            <div class="section-header">
+                <h2>Post Announcement</h2>
+                <span class="section-sub">Published immediately to all logged-in users</span>
+            </div>
+            <div class="ann-compose">
+                <div class="form-group">
+                    <label for="ann-title">Title</label>
+                    <input type="text" id="ann-title" placeholder="Announcement title...">
+                </div>
+                <div class="form-group">
+                    <label for="ann-body">Message</label>
+                    <textarea id="ann-body" rows="5" placeholder="Write your announcement here..."></textarea>
+                </div>
+                <div class="ann-options">
+                    <label class="check-label">
+                        <input type="checkbox" id="ann-pin"> Pin to top
+                    </label>
+                    <label class="check-label">
+                        <input type="checkbox" id="ann-email"> Send email to all users
+                    </label>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                    <button class="btn" onclick="postAnnouncement()">Post Announcement</button>
+                    <div id="ann-post-status" style="display:none;font-size:13px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Feed ───────────────────────────────────────────────────── -->
+        <section class="billing-section">
+            <div class="section-header">
+                <h2>Announcements</h2>
+                <button class="btn btn-sm btn-ghost" onclick="loadAnnouncements()">Refresh</button>
+            </div>
+            <div id="ann-feed">
+                <div class="loading-row"><div class="spinner"></div> Loading...</div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2026 Wycoff Communications, LLC. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="announcements.js"></script>
+</body>
+
+</html>
